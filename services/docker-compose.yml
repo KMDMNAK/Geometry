@@ -1,0 +1,12 @@
+version: "3"
+services:
+  wakati1:
+    image: ikawaha/kagome:latest
+    command: server -http=":80"
+    ports:
+      - "8000:80"
+  go_app:
+    build: ./wakati
+    # tty: true # コンテナの起動永続化
+    volumes:
+      - ./wakati/src:/go/src/work # マウントディレクトリ指定

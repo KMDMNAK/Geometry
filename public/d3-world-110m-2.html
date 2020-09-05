@@ -1,0 +1,67 @@
+<html>
+
+<body>
+    <div id="unitName" class="hidden"></div>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="http://d3js.org/topojson.v0.min.js"></script>
+    <script>
+        var width = 1100;
+        var height = 650;
+
+        var svg = d3.select("body").append("svg")
+            .attr("width", width)
+            .attr("height", height);
+        const scale = 130; //地図のスケール
+        const projection = d3.geo.mercator()
+            .center([1, 30.6])
+            .translate([width / 2, height / 2])
+            .scale(scale);
+        const path = d3.geo.path().projection(projection)
+        /* JavaScript goes here. */
+        d3.json("https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json", (error, worldmap) => {
+            console.log(error);
+            console.log(worldmap)
+            /*
+            svg.append("path")
+                .datum(topojson.object(worldmap, worldmap.objects.ne_110m_admin_0_countries))
+                .attr("d", d3.geo.path().projection(projection))
+                .on("mouseover", (d) => {
+                    console.log(d)
+                    var mXY = d3.mouse(document.body);
+                    d3.select("#unitName")
+                        .style("left", (mXY[0] + 10) + "px")
+                        .style("top", (mXY[1] + 10) + "px")
+                        .classed("hidden", false)
+
+                })
+            */
+
+            const subunits = topojson.object(worldmap, worldmap.objects.ne_110m_admin_0_countries);
+            svg.selectAll(".subunits")
+                .data(subunits.geometries)
+                .enter()
+                .append("path")
+                .attr("class", "subunit")
+                .attr("d", path)
+                .on("mouseover", (d) => {
+                    console.log(d)
+                    var mXY = d3.mouse(document.body);
+                    console.log(mXY);
+                    d3.select("#unitName")
+                        .style("left", (mXY[0] + 10) + "px")
+                        .style("top", (mXY[1] + 10) + "px")
+                        .classed("hidden", false)
+                        .text(d.properties.name);
+                })
+                .on("mouseout", function () {
+                    d3.select("#unitName")
+                        .classed("hidden", true)
+                        .text("");
+                });
+
+        });
+
+    </script>
+</body>
+
+</html>
