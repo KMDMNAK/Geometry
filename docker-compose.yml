@@ -1,0 +1,20 @@
+version: "3"
+services:
+    geometry-client:
+        build: ./client
+        volumes:
+            - ./client:/client
+        # tty: true
+        # network_mode: "host"
+        ports:
+            - "8080:8080"
+        command: "yarn dev"
+    geometry-server:
+        build: ./server
+        # tty: true
+        # network_mode: "host"
+        ports:
+            - "8000:8080"
+        volumes: 
+            - ./server:/server
+        command: "/bin/bash"
