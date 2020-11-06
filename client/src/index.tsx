@@ -4,9 +4,4 @@ import Map from './components/Map'
 
 const app = document.getElementById('app')
 
-render(
-    <div>
-        Hello World
-         <Map />
-    </div>, app
-)
+render(<div><Map /></div>, app)
